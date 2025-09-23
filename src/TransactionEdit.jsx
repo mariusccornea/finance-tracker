@@ -62,6 +62,7 @@ function TransactionEdit({ transactions, categories, setTransactions, t, i }) {
                 date:t.date,
                 amount:t.amount,
                 description:t.description,
+                category:t.category
               }),
               method: "PUT",
             }

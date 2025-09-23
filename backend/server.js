@@ -38,13 +38,13 @@ app.post("/transactions", (req, res) => {
 
 app.put("/transactions/:id", (req, res) => {
   const { id } = req.params;
-  const { date, amount, description } = req.body;
+  const { date, amount, description, category } = req.body;
 
   const result = db
     .prepare(
-      "UPDATE transactions SET date = ?, amount = ?, description = ? WHERE id = ?"
+      "UPDATE transactions SET date = ?, amount = ?, description = ?, category = ? WHERE id = ?"
     )
-    .run(date, amount, description, id);
+    .run(date, amount, description,category, id );
   const updated = db
     .prepare("SELECT * FROM transactions WHERE id = ?")
     .get(id);
