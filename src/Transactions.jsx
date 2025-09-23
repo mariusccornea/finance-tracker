@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import TransactionRow from "./TransactionRow";
+import TransactionEdit from "./TransactionEdit";
 
 function Transactions({ setTransactions, transactions }) {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
+  const [editingRow, setEditingRow] = useState(null);
 
   const total = transactions.reduce((sum, t) => {
     return sum + Number(t.amount);
@@ -14,7 +17,6 @@ function Transactions({ setTransactions, transactions }) {
   const categories = ["Rent", "Additional Expenses", "Food"];
   return (
     <div style={{ margin: "2rem" }}>
-  
       <div>
         <p>Number of transactions: {numberOfTransactions}</p>
         <p>Total Amount: {total}</p>
@@ -99,7 +101,6 @@ function Transactions({ setTransactions, transactions }) {
           <div className="form-row">
             <label htmlFor="date">Date</label>
             <input
-            
               id="date"
               className="transactionInput"
               type="date"
@@ -129,49 +130,30 @@ function Transactions({ setTransactions, transactions }) {
                 <th>Description</th>
                 <th>Amount</th>
                 <th>Category</th>
+                <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              {transactions.map((t, i) => (
-                <tr key={i}>
-                  <td>
-                    {new Date(t.date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </td>
-                  <td>{t.description}</td>
-                  <td>{Number(t.amount).toFixed(2)}</td>
-                  <td>{t.category}</td>
-                  <td>
-                    <button
-                    className="btn"
-                      onClick={async () => {
-                        const newTransactions = transactions.filter(
-                          (x) => x.id !== t.id
-                        );
-                        const res = await fetch(
-                          `http://localhost:5000/transactions/${t.id}`,
-                          {
-                            method: "DELETE",
-                          }
-                        );
-
-                        const result = await res.json();
-                        console.log(result);
-
-                        if (result.success) {
-                          setTransactions(newTransactions);
-                        }
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {transactions.map((t, i) =>
+                editingRow !== t.id ? (
+                  <TransactionRow
+                    setEditingRow={setEditingRow}
+                    transactions={transactions}
+                    setTransactions={setTransactions}
+                    t={t}
+                    i={i}
+                  />
+                ) : (
+                  <TransactionEdit
+                    categories={categories}
+                    transactions={transactions}
+                    setTransactions={setTransactions}
+                    t={t}
+                    i={i}
+                  />
+                )
+              )}
             </tbody>
           </table>
         )}

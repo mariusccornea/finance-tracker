@@ -36,6 +36,27 @@ app.post("/transactions", (req, res) => {
  
 })
 
+app.put("/transactions/:id", (req, res) => {
+  const { id } = req.params;
+  const { date, amount, description } = req.body;
+
+  const result = db
+    .prepare(
+      "UPDATE transactions SET date = ?, amount = ?, description = ? WHERE id = ?"
+    )
+    .run(date, amount, description, id);
+  const updated = db
+    .prepare("SELECT * FROM transactions WHERE id = ?")
+    .get(id);
+  
+  console.log("After update:", updated);
+  console.log("Updating id:", id);
+  console.log("With body:", req.body);
+  console.log("Result:", result);
+
+  res.json({ success: true, result });
+});
+
 app.delete("/transactions/:id", (req, res) => {
     const { id } = req.params;
     db.prepare("DELETE FROM transactions WHERE id = ?").run(id);

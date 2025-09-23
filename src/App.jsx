@@ -105,23 +105,28 @@ function App() {
 //componente - done 
 //react router - done
 //add categories
-
-// TBDone
 //change TAB when changing page - done
 //first draft of db - done
 //teste - running/ongoing
 //add tailwind - done
-//gandit ce urmeaza : authentication, edit mode for transactions (introduce Updated), update DB as discussed ( dupa schema de mai jos)
+
+// TBDone
+//teste deeper dive
+//authentication
+//edit mode for transactions (introduce Updated)
+//update DB as discussed ( dupa schema de mai jos)
+//UNDO greyed out cu timer 10 sec
+//React-Icons
+// switch de dark mode
+
 
 
 // Backlog
 //pt Dashboard : breakdwodn pe chart pe timeline (D, m, y, whatever)
 //butoane de plictisiti (pie charts)
-//React-Icons??
 // search (de vazut librarii)
 // accounts (tbd)
-// switch de dark mode
-// Tailwind, Chakra
+// Chakra
 
 // Tabel:
 // user - Categories - Amount, Description, Date
