@@ -14,6 +14,18 @@ import "./index.css";
 
 function App() {
 
+  //testing with small external API
+
+  useEffect(()=>{
+    async function fetchCatFact() {
+      const res = await fetch("https://catfact.ninja/fact");
+      const data = await res.json();
+      console.log(data.fact); // or console.log(data)
+    }
+
+    fetchCatFact();
+  },  [])
+
 
   const [transactions, setTransactions] = useState([])
   const location = useLocation();
@@ -31,6 +43,7 @@ function App() {
 
   loadTransactions();
 }, [])
+
 //set document title based on TAB based on useLocaiton (very smart iubesc Reactu)
   useEffect(()=>{
     switch (location.pathname) {
