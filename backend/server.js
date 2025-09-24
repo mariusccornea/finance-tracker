@@ -15,11 +15,13 @@ app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
 
+//read
 app.get("/transactions", (req, res) => {
     const rows = db.prepare("SELECT * FROM transactions").all();
     res.json(rows)
 })
 
+//create
 app.post("/transactions", (req, res) => {
     const { amount, description, date, category } = req.body;
     if (!amount || !description || !date || !category) {
