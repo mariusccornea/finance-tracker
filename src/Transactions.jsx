@@ -104,6 +104,12 @@ function Transactions({ setTransactions, transactions }) {
               id="date"
               className="transactionInput"
               type="date"
+              min={
+                new Date(new Date().setDate(new Date().getDate() - 30))
+                  .toISOString()
+                  .split("T")[0]
+              }
+              max={new Date().toISOString().split("T")[0]}
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
@@ -146,6 +152,7 @@ function Transactions({ setTransactions, transactions }) {
                   />
                 ) : (
                   <TransactionEdit
+                    setEditingRow={setEditingRow}
                     categories={categories}
                     transactions={transactions}
                     setTransactions={setTransactions}

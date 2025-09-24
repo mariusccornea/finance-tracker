@@ -1,4 +1,15 @@
-function TransactionEdit({ transactions, categories, setTransactions, t, i }) {
+import { useState } from "react";
+
+function TransactionEdit({
+  transactions,
+  setEditingRow,
+  categories,
+  setTransactions,
+  t,
+  i,
+}) {
+  const [transaction, setTransaction] = useState({ ...t });
+  
   return (
     <tr key={i}>
       <td>
@@ -6,11 +17,12 @@ function TransactionEdit({ transactions, categories, setTransactions, t, i }) {
           id="date"
           className="transactionInput"
           type="date"
-          defaultValue={t.date}
+          min="2024-01-01" max="2025-12-31"
+          defaultValue={transaction.date}
           onChange={(e) => {
-            t.date = e.target.value;
+            setTransaction({ ...transaction, date: e.target.value });
           }}
-          required
+          requiredhow
         />
       </td>
       <td>
@@ -18,8 +30,10 @@ function TransactionEdit({ transactions, categories, setTransactions, t, i }) {
           id="description"
           className="transactionInput"
           type="text"
-          defaultValue={t.description}
-          onChange={(e) => (t.description = e.target.value)}
+          defaultValue={transaction.description}
+          onChange={(e) =>
+            setTransaction({ ...transaction, description: e.target.value })
+          }
           required
         />
       </td>
@@ -28,15 +42,19 @@ function TransactionEdit({ transactions, categories, setTransactions, t, i }) {
           id="amount"
           className="transactionInput"
           type="number"
-          defaultValue={t.amount}
-          onChange={(e) => (t.amount = e.target.value)}
+          defaultValue={transaction.amount}
+          onChange={(e) =>
+            setTransaction({ ...transaction, amount: e.target.value })
+          }
           required
         />
       </td>
       <td>
         <select
-          defaultValue={t.category}
-          onChange={(e) => (t.category = e.target.value)}
+          defaultValue={transaction.category}
+          onChange={(e) =>
+            setTransaction({ ...transaction, category: e.target.value })
+          }
           className="transactionInput"
           name="Category"
           id="category"
@@ -50,51 +68,45 @@ function TransactionEdit({ transactions, categories, setTransactions, t, i }) {
         </select>
       </td>
       <td>
-        <button className="btn"
-        onClick={async ()=>{
-          const res = await fetch(
-            `http://localhost:5000/transactions/${t.id}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                date:t.date,
-                amount:t.amount,
-                description:t.description,
-                category:t.category
-              }),
-              method: "PUT",
-            }
-          );
-          const data = await res.json();
-          console.log(data);
-        }}
-        >Save</button>
-        <button className="btn">Cancel</button>
-        {/* <button
+        <button
           className="btn"
-            onClick={async () => {
-              const newTransactions = transactions.filter(
-                (x) => x.id !== t.id
-              );
-              const res = await fetch(
-                `http://localhost:5000/transactions/${t.id}`,
-                {
-                  method: "DELETE",
-                }
-              );
-
-              const result = await res.json();
-              console.log(result);
-
-              if (result.success) {
-                setTransactions(newTransactions);
+          onClick={async () => {
+            const res = await fetch(
+              `http://localhost:5000/transactions/${transaction.id}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  date: transaction.date,
+                  amount: transaction.amount,
+                  description: transaction.description,
+                  category: transaction.category,
+                }),
+                method: "PUT",
               }
-            }}
-          >
-            Delete
-          </button> */}
+            );
+            const data = await res.json();
+            if (data.success) {
+              const res = await fetch("http://localhost:5000/transactions");
+              const newTransactions = await res.json();
+              setTransactions(newTransactions);
+              setEditingRow(null);
+            }
+          }}
+        >
+          Save
+        </button>
+        <button
+          onClick={() => {
+            setEditingRow(null);
+            setTransaction({ ...t });
+          }}
+          className="btn"
+        >
+          Cancel
+        </button>
+  
       </td>
     </tr>
   );
