@@ -154,7 +154,6 @@ function Transactions({ setTransactions, transactions }) {
                   <TransactionEdit
                     setEditingRow={setEditingRow}
                     categories={categories}
-                    transactions={transactions}
                     setTransactions={setTransactions}
                     t={t}
                     i={i}

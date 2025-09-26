@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 function TransactionEdit({
-  transactions,
   setEditingRow,
   categories,
   setTransactions,
