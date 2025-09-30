@@ -3,12 +3,17 @@ import cors from "cors";
 import db from "./db.js";
 import { randomUUID } from "crypto";
 
+
+import authRoutes from "./routes/auth.js";
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(cors());
 app.use(express.json());
+
+// app.use("/", authRoutes);
 
 // health endpoint
 app.get("/health", (req, res) => {
@@ -20,6 +25,8 @@ app.get("/transactions", (req, res) => {
     const rows = db.prepare("SELECT * FROM transactions").all();
     res.json(rows)
 })
+
+
 
 //create
 app.post("/transactions", (req, res) => {
